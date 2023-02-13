@@ -1,0 +1,33 @@
+<section *ngIf="state$ | async as state">
+  <h3>Post</h3>
+  <article>
+    <table>
+      <tbody>
+        <tr>
+          <td>Title</td>
+          <td><input disabled style="width: 300px;" [value]="state.model.title"></td>
+        </tr>
+        <tr>
+          <td>Description</td>
+          <td><textarea disabled rows="8" style="width: 915px; height: 100px;"
+              [value]="state.model.description"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+  <h3>Rejected comments</h3>
+  <table>
+    <tbody>
+      <tr *ngFor="let row of state.model.comments">
+        <td *ngIf="row.commentType == commentType.REJECTED">
+          <div><label>Author: {{row.creationUser}}</label></div>
+          <div><label><textarea disabled style="width: 915px; height: 100px; background-color: aliceblue;"
+                [value]="row.comments"></textarea></label></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-primary" (click)="handleReturn()">
+    Return
+  </button>
+</section>

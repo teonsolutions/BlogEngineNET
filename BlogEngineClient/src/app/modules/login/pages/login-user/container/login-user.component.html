@@ -1,0 +1,42 @@
+<main *ngIf="state$ | async as state">
+  <section>
+    <article>
+      <form [formGroup]="form">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label>User Name</label>
+              </td>
+              <td>
+                <input type="text" formControlName="userLogin">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Password</label>
+              </td>
+              <td>
+                <input type="password" formControlName="password">
+              </td>
+            </tr>
+            <tr *ngIf="state.container.error != null">
+              <td colspan="2">
+                <ul>
+                  <li *ngFor="let row of state.container.error" style="color: red;">{{row.msg}}</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button (click)="handleClickOnLogin()">
+                  Log In
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </article>
+  </section>
+</main>

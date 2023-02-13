@@ -1,0 +1,16 @@
+.inline-item {
+  display: flex;
+}
+
+th,
+td {
+  border-bottom: 1px solid #ddd;
+}
+
+.t-c {
+  text-align: center !important;
+}
+
+.active {
+  background-color: aqua;
+}

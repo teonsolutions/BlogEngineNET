@@ -1,0 +1,34 @@
+<section *ngIf="state$ | async as state">
+  <h3>Post</h3>
+  <article>
+    <form [formGroup]="form">
+      <table>
+        <tbody>
+          <tr>
+            <td>Title</td>
+            <td><input formControlName="title" style="width: 300px;"></td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td><textarea rows="8" formControlName="description" style="width: 915px; height: 124px;"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+      <button *ngIf="state.formType != action.VIEW" class="btn btn-primary" (click)="handleClickOnSave()">
+        Save
+      </button>
+      <button *ngIf="state.formType != action.VIEW" class="btn btn-primary" (click)="handleCancel()">
+        Cancel
+      </button>
+      <button *ngIf="state.formType == action.VIEW" class="btn btn-primary" (click)="handleCancel()">
+        Return
+      </button>
+    </form>
+  </article>
+
+  <article *ngIf="state.error != null">
+    <ul>
+      <li *ngFor=" let row of state.error" style="color: red;">{{row.msg}}</li>
+    </ul>
+  </article>
+</section>

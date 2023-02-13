@@ -1,0 +1,63 @@
+<section *ngIf="state$ | async as state">
+  <h3>Post</h3>
+  <article>
+    <table>
+      <tbody>
+        <tr>
+          <td>Title</td>
+          <td><input disabled style="width: 300px;" [value]="state.model.title"></td>
+        </tr>
+        <tr>
+          <td>Description</td>
+          <td><textarea disabled rows="8" style="width: 915px; height: 100px;"
+              [value]="state.model.description"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+  <h3>Post's Comments</h3>
+  <table>
+    <tbody>
+      <tr *ngFor="let row of state.model.comments">
+        <td>
+          <div><label>Author: {{row.creationUser}}</label></div>
+          <div><label><textarea disabled style="width: 915px; height: 100px; background-color: beige;"
+                [value]="row.comments"></textarea></label></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <article>
+    <form [formGroup]="form">
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <label>
+                  Introduce your comment here:
+                </label>
+              </div>
+              <div>
+                <textarea rows="8" formControlName="comments" style="width: 915px; height: 124px;">
+              </textarea>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-primary" (click)="handleClickOnSave()">
+        Add
+      </button>
+      <button class="btn btn-primary" (click)="handleReturn()">
+        Return
+      </button>
+    </form>
+  </article>
+
+  <article *ngIf="state.error != null">
+    <ul>
+      <li *ngFor=" let row of state.error" style="color: red;">{{row.msg}}</li>
+    </ul>
+  </article>
+</section>

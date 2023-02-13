@@ -1,0 +1,53 @@
+<section *ngIf="state$ | async as state">
+  <h3>Post</h3>
+  <article>
+    <table>
+      <tbody>
+        <tr>
+          <td>Title</td>
+          <td><input disabled style="width: 300px;" [value]="state.model.title"></td>
+        </tr>
+        <tr>
+          <td>Description</td>
+          <td><textarea disabled rows="8" style="width: 915px; height: 100px;"
+              [value]="state.model.description"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+  <h3>Reject this post</h3>
+  <article>
+    <form [formGroup]="form">
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <label>
+                  Comment
+                </label>
+              </div>
+              <div>
+                <textarea rows="8" formControlName="comment" style="width: 915px; height: 124px;">
+              </textarea>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-primary" (click)="handleReject()">
+        Reject Post
+      </button>
+      <button class="btn btn-primary" (click)="handleCancel()">
+        Cancel
+      </button>
+    </form>
+  </article>
+
+  <article *ngIf="state.error != null">
+    <ul>
+      <li *ngFor=" let row of state.error" style="color: red;">{{row.msg}}</li>
+    </ul>
+  </article>
+
+</section>

@@ -1,0 +1,104 @@
+<main id="posts" *ngIf="state$ | async as state">
+  <section>
+    <span *ngIf="userSession != null" style="color:deepskyblue; font-weight: bold; font-size: large;">Welcome
+      {{userSession?.fullName}} - {{userSession?.rolName}}</span>
+  </section>
+  <section *ngIf="formType == action.CREATE || formType == action.EDIT || formType == action.VIEW">
+    <app-form-register-post (saveEvent)="handleSave()" (cancelEvent)="handleCancel()"></app-form-register-post>
+  </section>
+  <section *ngIf="formType == action.COMMENTS">
+    <app-form-add-comment (returnEvent)="handleResultComment()"></app-form-add-comment>
+  </section>
+  <section *ngIf="formType == action.REJECT">
+    <app-form-reject-post (saveEvent)="handleRejectConfim()"
+      (cancelEvent)="handleRejectCancel()"></app-form-reject-post>
+  </section>
+  <section *ngIf="formType == action.REJECT_COMMENTS">
+    <app-form-view-rejected-comment (returnEvent)="handleRejectCommentHide()"></app-form-view-rejected-comment>
+  </section>
+  <section *ngIf="formType == action.SEARCH" style="width: 1024px">
+    <h2>{{state.title}}</h2>
+    <button class="button button--is-third" (click)="handleSearch()">
+      Refresh
+    </button>
+    <button *ngIf="permision.add" class="button button--is-third" (click)="handleClickNew()">
+      New
+    </button>
+    <table style="width: 100%;">
+      <thead>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Author</th>
+        <th>Create Date</th>
+        <th>Status</th>
+        <th>Published Date</th>
+        <th>Actions</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of state.gridSource.items">
+          <td>{{row.title}}</td>
+          <td>{{row.description}}</td>
+          <td>{{row.author}}</td>
+          <td>{{row.creationDate}}</td>
+          <td>{{row.statusDesc}}</td>
+          <td>{{row.publishedDate}}</td>
+          <td>
+            <div class="inline-item">
+              <button *ngIf="permision.update && row.status == statusEnum.PENDING" class="btn btn-primary"
+                (click)="handleClickEdit(row)">
+                Edit
+              </button>
+              <button *ngIf="permision.view" class="btn btn-primary" (click)="handleClickView(row)">
+                View
+              </button>
+              <button *ngIf="permision.submit && row.status == statusEnum.PENDING" class="button button--is-third"
+                (click)="handleClickSubmit(row)">
+                Submit
+              </button>
+              <button *ngIf="permision.aproval && row.status == statusEnum.PENDING_APROVAL"
+                class="button button--is-third" (click)="handleClickAprove(row)">
+                Aprove
+              </button>
+              <button *ngIf="permision.reject && row.status == statusEnum.PENDING_APROVAL"
+                class="button button--is-third" (click)="handleClickReject(row)">
+                Reject
+              </button>
+              <button *ngIf="row.status == statusEnum.PUBLISHED" class="btn btn-primary"
+                (click)="handleAddComment(row)">
+                Add Comments
+              </button>
+              <button *ngIf="row.status == statusEnum.REJECTED" class="btn btn-primary"
+                (click)="handleViewRejectedComment(row)">
+                View Comments
+              </button>
+            </div>
+
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+    <article>
+      <ul *ngIf="state.gridSource.totalPages > 0" class="opcion-slider ">
+        <li class="  "><a (click)="loadPreviousPage()"> ◄ </a></li>
+        <li class="total"> {{state.gridSource.skip + 1}} / {{state.gridSource.totalPages}} </li>
+        <li [class.active]="getCurrentPageStyle(i + 1) "
+          *ngFor="let page of [].constructor(state.gridSource.totalPages); let i = index">
+          <a (click)="loadCurrentPage(i + 1)"> {{i +
+            1}} </a>
+        </li>
+        <li class=" "><a (click)="loadNextPage()"> ► </a></li>
+      </ul>
+      <ul *ngIf="state.gridSource.total == 0" class="mensaje-no-encontrado">
+        <li>
+          <p class="t-c">No records found.</p>
+        </li>
+      </ul>
+    </article>
+    <article *ngIf="state.error != null">
+      <ul>
+        <li *ngFor=" let row of state.error" style="color: red;">{{row.msg}}</li>
+      </ul>
+    </article>
+  </section>
+</main>
